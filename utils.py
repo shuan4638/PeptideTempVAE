@@ -45,7 +45,7 @@ def write_fasta(peptides, AMP_rank = 0):
         return
             
 def make_peptides(temp, prob, all_char, generate_seq = 2000, max_patient = 10000):
-    print ('Sampling peptides with Temp = %s ......' % temp)
+    print ('Sampling peptides with Temp = %.1f ......' % temp)
     peptides = {}
     i = 0
     patient = 0
@@ -58,7 +58,7 @@ def make_peptides(temp, prob, all_char, generate_seq = 2000, max_patient = 10000
             amino = all_char[arg-1]
             peptide.append(amino)     
         peptide = ''.join(peptide)
-        if len(peptide) > 10 and peptide not in peptides:
+        if len(peptide) > 20 and peptide not in peptides:
             peptides[i] = peptide
             i += 1
         patient += 1
@@ -68,5 +68,5 @@ def make_peptides(temp, prob, all_char, generate_seq = 2000, max_patient = 10000
     peptides = [peptide for peptide in peptides.values()]
     generated_len = len(peptides)
     pass_rate = generated_len/patient
-    print ('Peptdies generation complete! %s unique peptides were generated, pass rate = %.3f.' % (generated_len, pass_rate))
+    print ('Peptdies generation complete! %s unique peptides were generated, generating success rate = %.3f.' % (generated_len, pass_rate))
     return peptides 

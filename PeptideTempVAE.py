@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
- 
+import matplotlib.pyplot as plt
+
 from keras.layers import Input, Dense, Lambda
 from keras.models import Model
 from keras import backend as K
@@ -31,7 +32,7 @@ seq = np.array([[char2idx[c] for c in i] for i in AMPs[0]])
 
 x_train = make_seq(seq, vocab_size, min_len = 30, max_len = 40)
 
-def VAE(x_train, nb_epoch = 200):
+def VAE(x_train, nb_epoch = 300):
     batch_size = 100
     original_dim = vocab_size
     latent_dim = 2
@@ -89,6 +90,23 @@ prob = x_decoded.reshape(x_train.shape[1], vocab_size+1)
 
 write_learned_pattern(prob, all_char)
 
-for i, T in enumerate([0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]):
+sample_Ts = np.arange(0.1, 1.1, 0.1)
+def encoding(sequences, max_len = max_len):
+    seq = np.array([[char2idx[c] for c in i] for i in sequences])
+    seq_onehot = make_seq(seq, vocab_size, min_len = 30, max_len = 40)
+    seq_onehot = seq_onehot.reshape((len(seq_onehot), np.prod(seq_onehot.shape[1:])))
+    encoded =  encoder.predict(seq_onehot)
+    return encoded
+
+fig = plt.figure(figsize=(10, 10))
+ax = fig.add_subplot(111)
+for i, T in enumerate(sample_Ts):
+    T = 1.1 - T
     peptides = make_peptides(T, prob, all_char)
     write_fasta(peptides, i)
+    encoded_data = encoding(peptides)
+    ax.scatter(encoded_data[:, 0], encoded_data[:, 1], label = 'T = %.1f' % T)
+
+ax.legend()
+plt.savefig('Generated_encoded', dpi=500)
+
