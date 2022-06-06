@@ -1,4 +1,6 @@
 # PeptideTempVAE
+[![DOI](https://zenodo.org/badge/282300369.svg)](https://zenodo.org/badge/latestdoi/282300369)
+
 This repostory is the implementation of the following paper:
 
 [Designing Novel Functional Peptides by Manipulating a Temperature in the Softmax Function Coupled with Variational Autoencoder](https://doi.org/10.1109/BigData47090.2019.9006253)
